@@ -5,12 +5,12 @@ import { ProductsService } from './products.service';
 
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Redirect, Header, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { Product } from './schemas/product.schema';
 
 @Controller('products')
 export class ProductsController {
 
   constructor(private readonly productsService: ProductsService) {
-
   }
   
   // @Get()
@@ -21,29 +21,29 @@ export class ProductsController {
   // }
 
   @Get()
-  getAll(): string {
-    return 'getAll';
+  getAll(): Promise<Product[]> {
+    return this.productsService.getAll();
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string): string {
-    return 'getOne ' + id
+  getOne(@Param('id') id: string): Promise<Product> {
+    return this.productsService.getById(id)
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
-  create(@Body() createProductDto: CreateProductDto) {
-    return `Title: ${createProductDto.title} Price: ${createProductDto.price}`
+  create(@Body() createProductDto: CreateProductDto): Promise<Product> {
+    return this.productsService.create(createProductDto)
   }
 
   @Delete(':id')
-  remove (@Param('id') id: string) {
-    return 'Remove ' + id
+  remove (@Param('id') id: string): Promise<Product> {
+    return this.productsService.remove(id)
   }
 
   @Put(':id')
-  update(@Body() updateProductDto: UpdateProductDto, @Param('id') id: string) {
-    return 'Update ' + id
+  update(@Body() updateProductDto: UpdateProductDto, @Param('id') id: string): Promise<Product> {
+    return this.productsService.update(id, updateProductDto)
   }
 }
