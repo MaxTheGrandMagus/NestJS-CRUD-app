@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateProductDto } from './dto/create-product.dto'
@@ -17,7 +17,13 @@ export class ProductsService {
   }
 
   async getById(id: string): Promise<Product> {
-    return this.productModel.findById(id)
+    const product = this.productModel.findById(id)
+    if (!product) {
+      // optional ↓
+      // throw new HttpException(`Product #${id} not found`, HttpStatus.NOT_FOUND)
+      throw new NotFoundException(`Product ${id} not found`)
+    }
+    return product
   }
 
   async create(productDto: CreateProductDto): Promise<Product> {

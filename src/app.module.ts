@@ -9,7 +9,7 @@ import { ProductsModule } from './products/products.module';
 @Module({
   imports: [
     ProductsModule, 
-    MongooseModule.forRoot(`mongodb+srv://maxon:max123goose@cluster0.nzv6t.mongodb.net/products?retryWrites=true&w=majority`)
+    MongooseModule.forRoot(`mongodb+srv://maxon:max123goose@cluster0.nzv6t.mongodb.net/products?retryWrites=true&w=majority`),
   ],
   controllers: [AppController],
   providers: [AppService],
