@@ -4,8 +4,3 @@ import { CreateProductDto } from './create-product.dto';
 
 //duplicates and inherits sample class
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
-
-// export class UpdateProductDto {
-// 	readonly title: string
-// 	readonly price: number
-// }

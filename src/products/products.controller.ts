@@ -5,7 +5,7 @@ import { ProductsService } from './products.service';
 
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Redirect, Header, Req, Res, Query } from '@nestjs/common';
 import { Response, Request } from 'express';
-import { Product } from './schemas/product.schema';
+import { Product } from './entities/product.entity';
 
 @Controller('products')
 export class ProductsController {
@@ -49,7 +49,7 @@ export class ProductsController {
   }
 
   @Put(':id')
-  update(@Body() updateProductDto: UpdateProductDto, @Param('id') id: string): Promise<Product> {
+  update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productsService.update(id, updateProductDto)
   }
 }

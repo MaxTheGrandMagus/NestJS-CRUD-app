@@ -3,8 +3,11 @@ import { IsNumber, IsString } from 'class-validator'
 
 export class CreateProductDto {
   @IsString()
-  readonly title: string
+  readonly title: string;
 
   @IsNumber()
-  readonly price: number
+  readonly price: number;
+
+  @IsString({ each: true })
+  readonly characteristics: string[];
 }

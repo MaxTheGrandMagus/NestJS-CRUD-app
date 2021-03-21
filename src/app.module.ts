@@ -1,15 +1,24 @@
 /* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm'
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-
 import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
     ProductsModule, 
-    MongooseModule.forRoot(`mongodb+srv://maxon:max123goose@cluster0.nzv6t.mongodb.net/products?retryWrites=true&w=majority`),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'pass123',
+      database: 'postgres',
+      autoLoadEntities: true,
+      synchronize: true
+      // disable synchronize when u r on production ↑
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
