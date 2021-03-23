@@ -1,17 +1,18 @@
 /* eslint-disable prettier/prettier */
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Header, Query, Redirect, Req, Res, } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { ApiTags } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { Product } from './entities/product.entity';
 import { PaginationQueryDto } from './../common/dto/pagination-query.dto';
 
+@ApiTags('products')
 @Controller('products')
 export class ProductsController {
 
-  constructor(private readonly productsService: ProductsService) {
-  }
+  constructor(private readonly productsService: ProductsService) {}
   
   // @Get()
   // @Redirect('https://google.com ', 301)
