@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Characteristics } from './characteristics.entity';
 
-@Entity()
+@Entity() //sql table === 'product'
 export class Product {
 	@PrimaryGeneratedColumn()
 	id: number
@@ -10,8 +11,18 @@ export class Product {
 	title: string;
 
 	@Column()
-	price: number;
-
-	@Column("json", { nullable: true })
-	characteristics: string[]
+  price: number;
+  
+  // @Column()
+  // recommendations: number;
+	
+	@JoinTable()
+	@ManyToMany(
+		type => Characteristics, 
+		characteristics => characteristics.products,
+		{ 
+			cascade: true, // ['insert']
+		}
+	)
+	characteristics: Characteristics[]
 }

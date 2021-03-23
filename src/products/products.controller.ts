@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Header, Query, Redirect, Req, Res, } from '@nestjs/common';
+import { Response, Request } from 'express';
+import { ProductsService } from './products.service';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { CreateProductDto } from './dto/create-product.dto';
-import { ProductsService } from './products.service';
-
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, Redirect, Header, Req, Res, Query } from '@nestjs/common';
-import { Response, Request } from 'express';
 import { Product } from './entities/product.entity';
+import { PaginationQueryDto } from './../common/dto/pagination-query.dto';
 
 @Controller('products')
 export class ProductsController {
@@ -21,20 +21,16 @@ export class ProductsController {
   // }
 
   @Get()
-  getAll(): Promise<Product[]> {
-    return this.productsService.getAll();
+  getAll(@Query() paginationQuery: PaginationQueryDto): Promise<Product[]> {
+    return this.productsService.getAll(paginationQuery);
   }
 
-  // @Get()
-  // findAll(@Query() paginationQuery) {
-  //   const { limit, offset } = paginationQuery;
-  //   return `This action returns all products. Limit: ${limit}, offset: ${offset}`;
-  // }
 
   @Get(':id')
   getOne(@Param('id') id: string): Promise<Product> {
     return this.productsService.getById(id)
   }
+
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -43,13 +39,16 @@ export class ProductsController {
     return this.productsService.create(createProductDto)
   }
   
+
   @Delete(':id')
   remove (@Param('id') id: string): Promise<Product> {
     return this.productsService.remove(id)
   }
 
+
   @Put(':id')
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto): Promise<Product> {
     return this.productsService.update(id, updateProductDto)
   }
+  
 }
