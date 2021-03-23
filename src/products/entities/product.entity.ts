@@ -8,13 +8,16 @@ export class Product {
 	id: number
 
 	@Column()
-	title: string;
+  title: string;
+  
+  @Column({ nullable: true }) //for testing migrations
+  description: string;
 
 	@Column()
   price: number;
   
-  // @Column()
-  // recommendations: number;
+  @Column({ default: 0 })
+  recommendations: number;
 	
 	@JoinTable()
 	@ManyToMany(

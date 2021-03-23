@@ -78,29 +78,29 @@ export class ProductsService {
   }
 
 
-  // async recommendProduct(product: Product) {
-  //   const queryRunner = this.connection.createQueryRunner();
+  async recommendProduct(product: Product) {
+    const queryRunner = this.connection.createQueryRunner();
 
-  //   await queryRunner.connect();
-  //   await queryRunner.startTransaction();
-  //   try {
-  //     product.recommendations++;
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      product.recommendations++;
 
-  //     const recommendEvent = new Event();
-  //     recommendEvent.name = 'recommend_product';
-  //     recommendEvent.type = 'product';
-  //     recommendEvent.payload = { productId: product.id };
+      const recommendEvent = new Event();
+      recommendEvent.name = 'recommend_product';
+      recommendEvent.type = 'product';
+      recommendEvent.payload = { productId: product.id };
 
-  //     await queryRunner.manager.save(product);
-  //     await queryRunner.manager.save(recommendEvent)
+      await queryRunner.manager.save(product);
+      await queryRunner.manager.save(recommendEvent)
 
-  //     await queryRunner.commitTransaction();
-  //   } catch (error) {
-  //     await queryRunner.rollbackTransaction();
-  //   } finally {
-  //     await queryRunner.release();
-  //   }
-  // }
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
 
   private async preloadCharacteristicsByName(name: string): Promise<Characteristics> {
