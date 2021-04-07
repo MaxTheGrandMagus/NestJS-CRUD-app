@@ -7,10 +7,16 @@ import { Product } from './entities/product.entity';
 import { Characteristics } from './entities/characteristics.entity';
 import { Event } from './../events/entities/event.entity';
 
+import { ConfigModule } from '@nestjs/config';
+import productsConfig from "./config/products.config";
+
 @Module({
-  imports: [TypeOrmModule.forFeature([Product, Characteristics, Event])],
+  imports: [
+    TypeOrmModule.forFeature([Product, Characteristics, Event]), 
+    ConfigModule.forFeature(productsConfig)
+  ],
   controllers: [ProductsController],
-  providers: [ProductsService]
+  providers: [ProductsService],
+  exports: [ProductsService]
 })
-export class ProductsModule {
-}
+export class ProductsModule {}

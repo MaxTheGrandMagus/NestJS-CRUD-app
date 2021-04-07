@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, HttpException, HttpStatus, NotFoundException } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, NotFoundException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Connection, Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto'
@@ -9,6 +9,8 @@ import { Characteristics } from './entities/characteristics.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Event } from './../events/entities/event.entity';
 
+import { ConfigService, ConfigType } from '@nestjs/config';
+import productsConfig from './config/products.config';
 
 @Injectable()
 export class ProductsService {
@@ -17,7 +19,11 @@ export class ProductsService {
     @InjectRepository(Product) private readonly productRepository: Repository<Product>,
     @InjectRepository(Characteristics) private readonly characteristicsRepository: Repository<Characteristics>,
     private readonly connection: Connection,
-  ) {}
+    @Inject(productsConfig.KEY)
+    private readonly productsConfiguration: ConfigType<typeof productsConfig>,
+  ) {
+    console.log(productsConfig);
+  }
 
 
   async getAll(paginationQuery: PaginationQueryDto): Promise<Product[]> {
