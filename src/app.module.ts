@@ -7,24 +7,12 @@ import { ProductsModule } from './products/products.module';
 import { ProductRatingModule } from './product-rating/product-rating.module';
 
 import { ConfigModule } from '@nestjs/config';
+import { CommonModule } from './common/common.module';
 import appConfig from './config/app.config';
 // import * as Joi from '@hapi/joi';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      load: [appConfig]
-      // envFilePath: '.environment',
-      // ignoreEnvFile: true
-      // optional ↑
-
-      // validationSchema: Joi.object({
-      //   DATABASE_HOST: Joi.required(),
-      //   DATABASE_PORT: Joi.number().default(5432),
-      // }),
-      // validation ↑
-    }),
-    ProductsModule, 
     TypeOrmModule.forRootAsync({
       useFactory: () => ({
         type: 'postgres',
@@ -37,8 +25,21 @@ import appConfig from './config/app.config';
         synchronize: true
         // disable synchronize when u r on production ↑
       })
-    }), 
-    ProductRatingModule,
+    }),
+    ConfigModule.forRoot({
+      load: [appConfig]
+      // envFilePath: '.environment',
+      // ignoreEnvFile: true
+      // optional ↑
+
+      // validationSchema: Joi.object({
+      //   DATABASE_HOST: Joi.required(),
+      //   DATABASE_PORT: Joi.number().default(5432),
+      // }),
+      // validation ↑
+    }),
+    ProductsModule,  
+    ProductRatingModule, CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

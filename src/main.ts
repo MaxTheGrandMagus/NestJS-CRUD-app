@@ -4,6 +4,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { WrapResponseInterceptor } from './common/interceptors/wrap-response.interceptor';
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
@@ -18,6 +22,8 @@ async function bootstrap() {
     })
   );
 
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   const options = new DocumentBuilder()
     .setTitle('MaxON products')
     .setDescription('CRUD application')
@@ -25,6 +31,11 @@ async function bootstrap() {
     .build()
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/', app, document);
+
+  app.useGlobalInterceptors(
+    new WrapResponseInterceptor(),
+    new TimeoutInterceptor()
+  );
 
   await app.listen(process.env.PORT || 3000);
 }
